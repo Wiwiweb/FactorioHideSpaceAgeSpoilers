@@ -9,8 +9,12 @@ SpoilerContent.menu_simulations = {
   endgame = {},
 }
 
-SpoilerContent.factoriopedia = {
-  vulcanus = {"foundry"},
+SpoilerContent.prototypes = {
+  vulcanus = {
+    item = {"foundry"},
+    recipe = {"foundry"},
+    ["assembling-machine"] = {"foundry"},
+  },
   fulgora = {},
   gleba = {},
   aquilo = {},
