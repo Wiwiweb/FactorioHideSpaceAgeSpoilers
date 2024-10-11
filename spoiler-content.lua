@@ -9,11 +9,19 @@ SpoilerContent.menu_simulations = {
   endgame = {},
 }
 
-SpoilerContent.prototypes = {
+SpoilerContent.starting_technology = {
+  space = "space-platform",
+  vulcanus = "planet-discovery-vulcanus",
+  fulgora = "planet-discovery-fulgora",
+  gleba = "planet-discovery-gleba",
+  aquilo = "planet-discovery-aquilo",
+  endgame = "promethium-science-pack",
+}
+
+SpoilerContent.custom_prototypes = {
+  space = {},
   vulcanus = {
-    item = {"foundry"},
-    recipe = {"foundry"},
-    ["assembling-machine"] = {"foundry"},
+    ["segmented-unit"] = {"small-demolisher", "medium-demolisher", "big-demolisher"},
   },
   fulgora = {},
   gleba = {},
