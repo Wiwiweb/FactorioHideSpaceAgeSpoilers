@@ -1,0 +1,14 @@
+{
+  "name": "hide-space-age-spoilers",
+  "version": "1.0.0",
+  "title": "Hide Space Age spoilers",
+  "author": "Wiwiweb",
+  "dependencies": ["base >= 1.2.0", "space-age >= 1.2.0"],
+  "factorio_version": "1.2",
+  "package": {
+    "ignore": [
+      "exclude-from-package/*",
+      "*~"
+    ]
+  }
+}
