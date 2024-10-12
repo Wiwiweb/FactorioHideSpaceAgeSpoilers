@@ -1,5 +1,27 @@
 SpoilerContent = require("spoiler-content")
 
+
+local function find_prototype_for_name(name, types)
+  for type, _prototypes in pairs(types) do
+    if data.raw[type] then
+      local prototype = data.raw[type][name]
+      if prototype then return prototype end
+    else
+      log("Type in define but doesn't exist? " .. type)
+    end
+  end
+  error("Unknown prototype type for: " .. name)
+end
+
+local function find_prototype_for_item_name(item_name)
+  return find_prototype_for_name(item_name, defines.prototypes.item)
+end
+
+local function find_prototype_for_entity_name(entity_name)
+  return find_prototype_for_name(entity_name, defines.prototypes.entity)
+end
+
+
 local locations_to_hide = {}
 for location_name, _ in pairs(SpoilerContent.starting_technology) do
   if settings.startup["hsas-reveal-" .. location_name] and settings.startup["hsas-reveal-" .. location_name].value == false then
@@ -28,18 +50,37 @@ for location_name, prototype_table in pairs(SpoilerContent.custom_prototypes) do
   end
 end
 
--- Hide all tiles from tile group
-local tile_groups_to_hide = {}
-for location_name, tile_groups in pairs(SpoilerContent.tile_groups) do
+-- Hide all things placed by map gen settings (resources, cliffs, trees, rocks, tiles...)
+
+for location_name, planet_name in pairs(SpoilerContent.planet) do
   if locations_to_hide[location_name] then
-    for _, tile_group_name in pairs(tile_groups) do
-      tile_groups_to_hide[tile_group_name] = true
+    local map_gen = data.raw.planet[planet_name].map_gen_settings
+    if map_gen then
+      if map_gen.cliff_settings then
+        data.raw.cliff[map_gen.cliff_settings.name].hidden_in_factoriopedia = true
+      end
+      if map_gen.autoplace_controls then
+        for autoplace_control_name, _autoplace_control in pairs(map_gen.autoplace_controls) do
+          local resource = data.raw.resource[autoplace_control_name]
+          if resource then
+            resource.hidden_in_factoriopedia = true
+          end
+        end
+      end
+      if map_gen.autoplace_settings then
+        if map_gen.autoplace_settings.tile and map_gen.autoplace_settings.tile.settings then
+          for tile_name, _ in pairs(map_gen.autoplace_settings.tile.settings) do
+            data.raw.tile[tile_name].hidden_in_factoriopedia = true
+          end
+        end
+        if map_gen.autoplace_settings.entity and map_gen.autoplace_settings.entity.settings then
+          for entity_name, _ in pairs(map_gen.autoplace_settings.entity.settings) do
+            local prototype = find_prototype_for_entity_name(entity_name)
+            prototype.hidden_in_factoriopedia = true
+          end
+        end
+      end
     end
-  end
-end
-for _tile_name, tile_prototype in pairs(data.raw.tile) do
-  if tile_groups_to_hide[tile_prototype.subgroup] then
-    tile_prototype.hidden_in_factoriopedia = true
   end
 end
 
@@ -60,26 +101,6 @@ for technology_name, technology in pairs(data.raw.technology) do
       table.insert(technology_children[prerequisite_name], technology_name)
     end
   end
-end
-
-local function find_prototype_for_name(name, types)
-  for type, _prototypes in pairs(types) do
-    if data.raw[type] then
-      local prototype = data.raw[type][name]
-      if prototype then return prototype end
-    else
-      log(type)
-    end
-  end
-  error("Unknown prototype type for: " .. name)
-end
-
-local function find_prototype_for_item_name(item_name)
-  return find_prototype_for_name(item_name, defines.prototypes.item)
-end
-
-local function find_prototype_for_entity_name(entity_name)
-  return find_prototype_for_name(entity_name, defines.prototypes.entity)
 end
 
 local function hide_recipe_and_results(recipe_name)

@@ -18,7 +18,6 @@ SpoilerContent.starting_technology = {
   endgame = "promethium-science-pack",
 }
 
--- TODO: tiles and environment tabs
 SpoilerContent.custom_prototypes = {
   space = {
     ["asteroid-chunk"] = {"metallic-asteroid-chunk", "carbonic-asteroid-chunk", "oxide-asteroid-chunk"},
@@ -28,7 +27,6 @@ SpoilerContent.custom_prototypes = {
   },
   vulcanus = {
     ["item"] = {"tungsten-ore", "calcite"},
-    ["resource"] = {"tungsten-ore", "calcite"},
     ["fluid"] = {"lava"},
     ["segmented-unit"] = {"small-demolisher", "medium-demolisher", "big-demolisher"},
     ["asteroid"] = {
@@ -41,7 +39,6 @@ SpoilerContent.custom_prototypes = {
   },
   fulgora = {
     ["item"] = {"scrap"},
-    ["resource"] = {"scrap"},
     ["ammo-category"] = {"tesla"},
     ["asteroid"] = {
       "small-metallic-asteroid", "medium-metallic-asteroid",
@@ -89,11 +86,11 @@ SpoilerContent.custom_prototypes = {
   },
 }
 
-SpoilerContent.tile_groups = {
-  vulcanus = {"vulcanus-tiles"},
-  fulgora = {"fulgora-tiles"},
-  gleba = {"gleba-tiles", "gleba-water-tiles"},
-  aquilo = {"aquilo-tiles"},
+SpoilerContent.planet = {
+  vulcanus = "vulcanus",
+  fulgora = "fulgora",
+  gleba = "gleba",
+  aquilo = "aquilo",
 }
 
 return SpoilerContent
