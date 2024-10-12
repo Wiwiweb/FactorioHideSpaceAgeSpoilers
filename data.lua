@@ -47,11 +47,60 @@ for technology_name, technology in pairs(data.raw.technology) do
   end
 end
 
+local function find_prototype_for_name(name, types)
+  for type, _prototypes in pairs(types) do
+    if data.raw[type] then
+      local prototype = data.raw[type][name]
+      if prototype then return prototype end
+    else
+      log(type)
+    end
+  end
+  error("Unknown prototype type for: " .. name)
+end
+
+local function find_prototype_for_item_name(item_name)
+  return find_prototype_for_name(item_name, defines.prototypes.item)
+end
+
+local function find_prototype_for_entity_name(entity_name)
+  return find_prototype_for_name(entity_name, defines.prototypes.entity)
+end
+
+local function hide_recipe_and_results(recipe_name)
+  local recipe = data.raw.recipe[recipe_name]
+  recipe.hidden_in_factoriopedia = true
+
+  if recipe.results then
+    for _, recipe_result in pairs(recipe.results) do
+
+      if recipe_result.type == "fluid" then
+        data.raw.fluid[recipe_result.name].hidden_in_factoriopedia = true
+      elseif recipe_result.type == "item" then
+        local item = find_prototype_for_item_name(recipe_result.name)
+        item.hidden_in_factoriopedia = true
+        if item.place_result then
+          local place_result = find_prototype_for_entity_name(item.place_result)
+          place_result.hidden_in_factoriopedia = true
+        end
+        if item.plant_result then
+          data.raw.plant[item.place_as_tile.result].hidden_in_factoriopedia = true
+        end
+        if item.place_as_tile then
+          data.raw.tile[item.place_as_tile.result].hidden_in_factoriopedia = true
+        end
+      end
+    end
+  end
+end
+
 local function hide_prototypes_from_tech_and_children(technology_name)
   local technology = data.raw.technology[technology_name]
   if not technology then return end
   for _, effect in pairs(technology.effects) do
-    -- TODO
+    if effect.type == "unlock-recipe" then
+      hide_recipe_and_results(effect.recipe)
+    end
   end
 
   -- Recusively call children unless child is a starting technology for another location
