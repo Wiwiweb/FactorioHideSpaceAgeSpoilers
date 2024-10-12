@@ -1,137 +1,100 @@
-SpoilerContent = require("spoiler-content")
-Util = require("util")
+Util = require("src/util")
+SpoilerContent = require("src/spoiler-content")
+TechTree = require("src/tech-tree")
 
-
-local locations_to_hide = {}
-for location_name, _ in pairs(SpoilerContent.starting_technology) do
-  if settings.startup["hsas-reveal-" .. location_name] and settings.startup["hsas-reveal-" .. location_name].value == false then
-    locations_to_hide[location_name] = true
+local hide_location = {}
+for location_name, _ in pairs(SpoilerContent.starting_technologies) do
+  if settings.startup["hsas-reveal-" .. location_name] then
+    hide_location[location_name] = not settings.startup["hsas-reveal-" .. location_name].value
   end
 end
 
 -- Menu simulations
 local data_raw_menu_simulations = data.raw["utility-constants"]["default"].main_menu_simulations
 for location_name, menu_simulation_names in pairs(SpoilerContent.menu_simulations) do
-  if locations_to_hide[location_name] then
+  if hide_location[location_name] then
     for _, menu_simulation_name in pairs(menu_simulation_names) do
       data_raw_menu_simulations[menu_simulation_name] = nil
     end
   end
 end
 
+---- Prototypes
+
+--- Maps of sets
+---@type table<string, table<string, boolean>>
+local prototypes_to_hide = {}
+---@type table<string, table<string, boolean>>
+local prototypes_to_keep_revealed = {}
+
+local function add_to_prototype_maps(location_name, prototype_type, prototype_name)
+  local prototype_map
+  if hide_location[location_name] then
+    prototype_map = prototypes_to_hide
+  else
+    prototype_map = prototypes_to_keep_revealed
+  end
+  prototype_map[prototype_type] = prototype_map[prototype_type] or {}
+  prototype_map[prototype_type][prototype_name] = true
+end
+
 -- Custom hardcoded prototypes
 for location_name, prototype_table in pairs(SpoilerContent.custom_prototypes) do
-  if locations_to_hide[location_name] then
-    for prototype_type, prototype_names in pairs(prototype_table) do
-      for _, prototype_name in pairs(prototype_names) do
-        data.raw[prototype_type][prototype_name].hidden_in_factoriopedia = true
-      end
+  for prototype_type, prototype_names in pairs(prototype_table) do
+    for _, prototype_name in pairs(prototype_names) do
+      add_to_prototype_maps(location_name, prototype_type, prototype_name)
     end
   end
 end
 
--- Hide all things placed by map gen settings (resources, cliffs, trees, rocks, tiles...)
-
+-- Prototypes placed by map gen settings (resources, cliffs, trees, rocks, tiles...)
 for location_name, planet_name in pairs(SpoilerContent.planet) do
-  if locations_to_hide[location_name] then
-    local map_gen = data.raw.planet[planet_name].map_gen_settings
-    if map_gen then
-      if map_gen.cliff_settings then
-        data.raw.cliff[map_gen.cliff_settings.name].hidden_in_factoriopedia = true
-      end
-      if map_gen.autoplace_controls then
-        for autoplace_control_name, _autoplace_control in pairs(map_gen.autoplace_controls) do
-          local resource = data.raw.resource[autoplace_control_name]
-          if resource then
-            resource.hidden_in_factoriopedia = true
-          end
+  local map_gen = data.raw.planet[planet_name].map_gen_settings
+  if map_gen then
+    if map_gen.cliff_settings then
+      data.raw.cliff[map_gen.cliff_settings.name].hidden_in_factoriopedia = true
+    end
+    if map_gen.autoplace_controls then
+      for autoplace_control_name, _autoplace_control in pairs(map_gen.autoplace_controls) do
+        local resource = data.raw.resource[autoplace_control_name]
+        if resource then
+          add_to_prototype_maps(location_name, "resource", autoplace_control_name)
         end
       end
-      if map_gen.autoplace_settings then
-        if map_gen.autoplace_settings.tile and map_gen.autoplace_settings.tile.settings then
-          for tile_name, _ in pairs(map_gen.autoplace_settings.tile.settings) do
-            data.raw.tile[tile_name].hidden_in_factoriopedia = true
-          end
+    end
+    if map_gen.autoplace_settings then
+      if map_gen.autoplace_settings.tile and map_gen.autoplace_settings.tile.settings then
+        for tile_name, _ in pairs(map_gen.autoplace_settings.tile.settings) do
+          add_to_prototype_maps(location_name, "tile", tile_name)
         end
-        if map_gen.autoplace_settings.entity and map_gen.autoplace_settings.entity.settings then
-          for entity_name, _ in pairs(map_gen.autoplace_settings.entity.settings) do
-            local prototype = Util.find_prototype_for_entity_name(entity_name)
-            prototype.hidden_in_factoriopedia = true
-          end
+      end
+      if map_gen.autoplace_settings.entity and map_gen.autoplace_settings.entity.settings then
+        for entity_name, _ in pairs(map_gen.autoplace_settings.entity.settings) do
+          add_to_prototype_maps(location_name, "unknown_entity", entity_name)
         end
       end
     end
   end
 end
 
--- Automatically find prototypes by going through the tech tree
+-- Prototypes from tech
+TechTree.add_tech_tree_prototypes(hide_location, prototypes_to_hide, prototypes_to_keep_revealed)
 
--- Create set of starting technologies to find end points (e.g. hiding Vulcanus should not go beyond Aquilo discovery tech)
-local all_starting_technologies = {}
-for _location_name, starting_technology_name in pairs(SpoilerContent.starting_technology) do
-  all_starting_technologies[starting_technology_name] = true
-end
 
--- Build inverted dependency graph
-local technology_children = {}
-for technology_name, technology in pairs(data.raw.technology) do
-  if technology.prerequisites then
-    for _, prerequisite_name in pairs(technology.prerequisites) do
-      technology_children[prerequisite_name] = technology_children[prerequisite_name] or {}
-      table.insert(technology_children[prerequisite_name], technology_name)
+-- We gathered all the prototypes, now hide them
+for prototype_type, prototype_set in pairs(prototypes_to_hide) do
+  for prototype_name, _true in pairs(prototype_set) do
+    if prototypes_to_keep_revealed[prototype_type] and prototypes_to_keep_revealed[prototype_type][prototype_name] then goto continue end
+    local prototype
+    if prototype_type == "unknown_entity" then
+      prototype = Util.find_prototype_for_entity_name(prototype_name)
+      if prototypes_to_keep_revealed[prototype.type] and prototypes_to_keep_revealed[prototype.type][prototype_name] then goto continue end
+    else
+      prototype = data.raw[prototype_type][prototype_name]
     end
-  end
-end
 
-local function hide_recipe_and_results(recipe_name)
-  local recipe = data.raw.recipe[recipe_name]
-  recipe.hidden_in_factoriopedia = true
+    prototype.hidden_in_factoriopedia = true
 
-  if recipe.results then
-    for _, recipe_result in pairs(recipe.results) do
-      if recipe_result.type == "fluid" then
-        data.raw.fluid[recipe_result.name].hidden_in_factoriopedia = true
-      elseif recipe_result.type == "item" then
-        local item = Util.find_prototype_for_item_name(recipe_result.name)
-        item.hidden_in_factoriopedia = true
-        if item.place_result then
-          local place_result = Util.find_prototype_for_entity_name(item.place_result)
-          place_result.hidden_in_factoriopedia = true
-        end
-        if item.plant_result then
-          data.raw.plant[item.plant_result].hidden_in_factoriopedia = true
-        end
-        if item.place_as_tile then
-          data.raw.tile[item.place_as_tile.result].hidden_in_factoriopedia = true
-        end
-      end
-    end
-  end
-end
-
-local function hide_prototypes_from_tech_and_children(technology_name)
-  local technology = data.raw.technology[technology_name]
-  if not technology then return end
-  if technology.effects then
-    for _, effect in pairs(technology.effects) do
-      if effect.type == "unlock-recipe" then
-        hide_recipe_and_results(effect.recipe)
-      end
-    end
-  end
-
-  -- Recusively call children unless child is a starting technology for another location
-  if technology_children[technology_name] then
-    for _, child_technology_name in pairs(technology_children[technology_name]) do
-      if not all_starting_technologies[child_technology_name] then
-        hide_prototypes_from_tech_and_children(child_technology_name)
-      end
-    end
-  end
-end
-
-for location_name, starting_technology_name in pairs(SpoilerContent.starting_technology) do
-  if locations_to_hide[location_name] then
-    hide_prototypes_from_tech_and_children(starting_technology_name)
+    ::continue::
   end
 end

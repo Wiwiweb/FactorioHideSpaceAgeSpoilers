@@ -1,5 +1,11 @@
 local locations = {
   {
+    name = "nauvis",
+    localised_name = {"space-location-name.nauvis"},
+    hidden = true,
+    default_value = true,
+  },
+  {
     name = "space",
     localised_name = {"item-group-name.space"}
   },
@@ -34,7 +40,8 @@ for i, location in pairs(locations) do
       localised_name = {"mod-setting-name.hsas-reveal", location.localised_name},
       setting_type = "startup",
       order = tostring(i),
-      default_value = false,
+      hidden = location.hidden or false,
+      default_value = location.default_value or false,
     }
   )
 end

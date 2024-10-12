@@ -1,4 +1,4 @@
-SpoilerContent = {}
+local SpoilerContent = {}
 
 SpoilerContent.menu_simulations = {
   space = {"platform_science"},
@@ -9,13 +9,22 @@ SpoilerContent.menu_simulations = {
   endgame = {},
 }
 
-SpoilerContent.starting_technology = {
-  space = "space-platform",
-  vulcanus = "planet-discovery-vulcanus",
-  fulgora = "planet-discovery-fulgora",
-  gleba = "planet-discovery-gleba",
-  aquilo = "planet-discovery-aquilo",
-  endgame = "promethium-science-pack",
+SpoilerContent.starting_technologies = {
+  nauvis = {"electronics", "steam-power"},
+  space = {"space-platform"},
+  vulcanus = {"planet-discovery-vulcanus"},
+  fulgora = {"planet-discovery-fulgora"},
+  gleba = {"planet-discovery-gleba"},
+  aquilo = {"planet-discovery-aquilo"},
+  endgame = {"promethium-science-pack"},
+}
+
+SpoilerContent.planet = {
+  nauvis = "nauvis",
+  vulcanus = "vulcanus",
+  fulgora = "fulgora",
+  gleba = "gleba",
+  aquilo = "aquilo",
 }
 
 SpoilerContent.custom_prototypes = {
@@ -84,13 +93,6 @@ SpoilerContent.custom_prototypes = {
     ["space-location"] = {"solar-system-edge", "shattered-planet"},
     ["space-connection"] = {"aquilo-solar-system-edge", "solar-system-edge-shattered-planet"},
   },
-}
-
-SpoilerContent.planet = {
-  vulcanus = "vulcanus",
-  fulgora = "fulgora",
-  gleba = "gleba",
-  aquilo = "aquilo",
 }
 
 return SpoilerContent
