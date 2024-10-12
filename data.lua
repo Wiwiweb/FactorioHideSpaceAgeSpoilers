@@ -1,25 +1,5 @@
 SpoilerContent = require("spoiler-content")
-
-
-local function find_prototype_for_name(name, types)
-  for type, _prototypes in pairs(types) do
-    if data.raw[type] then
-      local prototype = data.raw[type][name]
-      if prototype then return prototype end
-    else
-      log("Type in define but doesn't exist? " .. type)
-    end
-  end
-  error("Unknown prototype type for: " .. name)
-end
-
-local function find_prototype_for_item_name(item_name)
-  return find_prototype_for_name(item_name, defines.prototypes.item)
-end
-
-local function find_prototype_for_entity_name(entity_name)
-  return find_prototype_for_name(entity_name, defines.prototypes.entity)
-end
+Util = require("util")
 
 
 local locations_to_hide = {}
@@ -75,7 +55,7 @@ for location_name, planet_name in pairs(SpoilerContent.planet) do
         end
         if map_gen.autoplace_settings.entity and map_gen.autoplace_settings.entity.settings then
           for entity_name, _ in pairs(map_gen.autoplace_settings.entity.settings) do
-            local prototype = find_prototype_for_entity_name(entity_name)
+            local prototype = Util.find_prototype_for_entity_name(entity_name)
             prototype.hidden_in_factoriopedia = true
           end
         end
@@ -112,10 +92,10 @@ local function hide_recipe_and_results(recipe_name)
       if recipe_result.type == "fluid" then
         data.raw.fluid[recipe_result.name].hidden_in_factoriopedia = true
       elseif recipe_result.type == "item" then
-        local item = find_prototype_for_item_name(recipe_result.name)
+        local item = Util.find_prototype_for_item_name(recipe_result.name)
         item.hidden_in_factoriopedia = true
         if item.place_result then
-          local place_result = find_prototype_for_entity_name(item.place_result)
+          local place_result = Util.find_prototype_for_entity_name(item.place_result)
           place_result.hidden_in_factoriopedia = true
         end
         if item.plant_result then
