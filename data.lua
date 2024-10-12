@@ -2,7 +2,7 @@ SpoilerContent = require("spoiler-content")
 
 local locations_to_hide = {}
 for location_name, _ in pairs(SpoilerContent.starting_technology) do
-  if settings.startup["hsas-reveal-"..location_name] and settings.startup["hsas-reveal-"..location_name].value == false then
+  if settings.startup["hsas-reveal-" .. location_name] and settings.startup["hsas-reveal-" .. location_name].value == false then
     locations_to_hide[location_name] = true
   end
 end
@@ -25,6 +25,21 @@ for location_name, prototype_table in pairs(SpoilerContent.custom_prototypes) do
         data.raw[prototype_type][prototype_name].hidden_in_factoriopedia = true
       end
     end
+  end
+end
+
+-- Hide all tiles from tile group
+local tile_groups_to_hide = {}
+for location_name, tile_groups in pairs(SpoilerContent.tile_groups) do
+  if locations_to_hide[location_name] then
+    for _, tile_group_name in pairs(tile_groups) do
+      tile_groups_to_hide[tile_group_name] = true
+    end
+  end
+end
+for _tile_name, tile_prototype in pairs(data.raw.tile) do
+  if tile_groups_to_hide[tile_prototype.subgroup] then
+    tile_prototype.hidden_in_factoriopedia = true
   end
 end
 
@@ -73,7 +88,6 @@ local function hide_recipe_and_results(recipe_name)
 
   if recipe.results then
     for _, recipe_result in pairs(recipe.results) do
-
       if recipe_result.type == "fluid" then
         data.raw.fluid[recipe_result.name].hidden_in_factoriopedia = true
       elseif recipe_result.type == "item" then

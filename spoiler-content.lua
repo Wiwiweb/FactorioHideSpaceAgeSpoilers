@@ -23,7 +23,8 @@ SpoilerContent.custom_prototypes = {
   space = {
     ["asteroid-chunk"] = {"metallic-asteroid-chunk", "carbonic-asteroid-chunk", "oxide-asteroid-chunk"},
     ["item"] = {"metallic-asteroid-chunk", "carbonic-asteroid-chunk", "oxide-asteroid-chunk"},
-    ["space-connection"] = {"nauvis-vulcanus", "nauvis-fulgora", "nauvis-gleba"}
+    ["space-connection"] = {"nauvis-vulcanus", "nauvis-fulgora", "nauvis-gleba"},
+    ["tile"] = {"empty-space"},
   },
   vulcanus = {
     ["item"] = {"tungsten-ore", "calcite"},
@@ -86,6 +87,13 @@ SpoilerContent.custom_prototypes = {
     ["space-location"] = {"solar-system-edge", "shattered-planet"},
     ["space-connection"] = {"aquilo-solar-system-edge", "solar-system-edge-shattered-planet"},
   },
+}
+
+SpoilerContent.tile_groups = {
+  vulcanus = {"vulcanus-tiles"},
+  fulgora = {"fulgora-tiles"},
+  gleba = {"gleba-tiles", "gleba-water-tiles"},
+  aquilo = {"aquilo-tiles"},
 }
 
 return SpoilerContent
