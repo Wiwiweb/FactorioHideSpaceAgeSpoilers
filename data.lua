@@ -84,7 +84,7 @@ local function hide_recipe_and_results(recipe_name)
           place_result.hidden_in_factoriopedia = true
         end
         if item.plant_result then
-          data.raw.plant[item.place_as_tile.result].hidden_in_factoriopedia = true
+          data.raw.plant[item.plant_result].hidden_in_factoriopedia = true
         end
         if item.place_as_tile then
           data.raw.tile[item.place_as_tile.result].hidden_in_factoriopedia = true
@@ -97,9 +97,11 @@ end
 local function hide_prototypes_from_tech_and_children(technology_name)
   local technology = data.raw.technology[technology_name]
   if not technology then return end
-  for _, effect in pairs(technology.effects) do
-    if effect.type == "unlock-recipe" then
-      hide_recipe_and_results(effect.recipe)
+  if technology.effects then
+    for _, effect in pairs(technology.effects) do
+      if effect.type == "unlock-recipe" then
+        hide_recipe_and_results(effect.recipe)
+      end
     end
   end
 
