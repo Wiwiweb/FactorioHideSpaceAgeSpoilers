@@ -1,4 +1,4 @@
-local Util = {}
+local Common = {}
 
 local function find_prototype_for_name(name, types)
   for type, _prototypes in pairs(types) do
@@ -12,19 +12,19 @@ local function find_prototype_for_name(name, types)
   error("Unknown prototype type for: " .. name)
 end
 
-function Util.add_prototypes_from_recipe_to_map(recipe_name, prototype_map)
+function Common.add_prototypes_from_recipe_to_map(recipe_name, prototype_map)
   prototype_map["recipe"][recipe_name] = true
   local recipe = data.raw.recipe[recipe_name]
 
   if recipe.results then
     for _, recipe_result in pairs(recipe.results) do
-      Util.add_result_and_placed_entity_to_map(recipe_result, prototype_map)
+      Common.add_result_and_placed_entity_to_map(recipe_result, prototype_map)
     end
   end
 end
 
-function Util.add_item_and_placed_entity_to_map(item_name, prototype_map)
-  prototype = Util.find_prototype_for_item_name(item_name)
+function Common.add_item_and_placed_entity_to_map(item_name, prototype_map)
+  prototype = Common.find_prototype_for_item_name(item_name)
   prototype_map[prototype.type] = prototype_map[prototype.type] or {}
   prototype_map[prototype.type][item_name] = true
   if prototype.place_result then
@@ -41,21 +41,21 @@ function Util.add_item_and_placed_entity_to_map(item_name, prototype_map)
   end
 end
 
-function Util.add_result_and_placed_entity_to_map(result, prototype_map)
+function Common.add_result_and_placed_entity_to_map(result, prototype_map)
   if result.type == "fluid" then
     prototype_map["fluid"] = prototype_map["fluid"] or {}
     prototype_map["fluid"][result.name] = true
   elseif result.type == "item" then
-    Util.add_item_and_placed_entity_to_map(result.name, prototype_map)
+    Common.add_item_and_placed_entity_to_map(result.name, prototype_map)
   end
 end
 
-function Util.find_prototype_for_item_name(item_name)
+function Common.find_prototype_for_item_name(item_name)
   return find_prototype_for_name(item_name, defines.prototypes.item)
 end
 
-function Util.find_prototype_for_entity_name(entity_name)
+function Common.find_prototype_for_entity_name(entity_name)
   return find_prototype_for_name(entity_name, defines.prototypes.entity)
 end
 
-return Util
+return Common

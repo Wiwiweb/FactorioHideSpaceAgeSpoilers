@@ -99,7 +99,7 @@ function TechTree.add_tech_tree_prototypes(hide_location, prototypes_to_hide, pr
     local recipes = get_recipes_from_tech(technology_name)
     for _, recipe_name in pairs(recipes) do
       prototype_map["recipe"][recipe_name] = true
-      Util.add_prototypes_from_recipe_to_map(recipe_name, prototype_map)
+      Common.add_prototypes_from_recipe_to_map(recipe_name, prototype_map)
     end
 
     debug_set_description(hide_location, technology_name)

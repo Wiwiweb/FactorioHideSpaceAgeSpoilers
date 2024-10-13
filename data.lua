@@ -1,4 +1,4 @@
-Util = require("src/util")
+Common = require("src/common")
 SpoilerContent = require("src/spoiler-content")
 TechTree = require("src/tech-tree")
 
@@ -55,10 +55,10 @@ for location_name, planet_name in pairs(SpoilerContent.planet) do
           if resource.minable then
             if resource.minable.results then
               for _, result in pairs(resource.minable.results) do
-                Util.add_result_and_placed_entity_to_map(result, prototype_map)
+                Common.add_result_and_placed_entity_to_map(result, prototype_map)
               end
             elseif resource.minable.result then
-              Util.add_item_and_placed_entity_to_map(resource.minable.result, prototype_map)
+              Common.add_item_and_placed_entity_to_map(resource.minable.result, prototype_map)
             end
           end
         end
@@ -85,7 +85,7 @@ end
 for recipe_name, recipe in pairs(data.raw.recipe) do
   prototypes_to_keep_revealed["recipe"] = prototypes_to_keep_revealed["recipe"] or {}
   if recipe.enabled then
-    Util.add_prototypes_from_recipe_to_map(recipe_name, prototypes_to_keep_revealed)
+    Common.add_prototypes_from_recipe_to_map(recipe_name, prototypes_to_keep_revealed)
   end
 end
 
@@ -99,7 +99,7 @@ for prototype_type, prototype_set in pairs(prototypes_to_hide) do
     if prototypes_to_keep_revealed[prototype_type] and prototypes_to_keep_revealed[prototype_type][prototype_name] then goto continue end
     local prototype
     if prototype_type == "unknown_entity" then
-      prototype = Util.find_prototype_for_entity_name(prototype_name)
+      prototype = Common.find_prototype_for_entity_name(prototype_name)
       if prototypes_to_keep_revealed[prototype.type] and prototypes_to_keep_revealed[prototype.type][prototype_name] then goto continue end
     else
       prototype = data.raw[prototype_type][prototype_name]
