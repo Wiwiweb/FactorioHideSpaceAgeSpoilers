@@ -5,8 +5,6 @@ local function find_prototype_for_name(name, types)
     if data.raw[type] then
       local prototype = data.raw[type][name]
       if prototype then return prototype end
-    else
-      log("Type in define but doesn't exist? " .. type)
     end
   end
   error("Unknown prototype type for: " .. name)
