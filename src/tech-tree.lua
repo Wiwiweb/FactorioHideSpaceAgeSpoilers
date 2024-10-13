@@ -70,21 +70,6 @@ local function get_recipes_from_tech(technology_name)
   return recipe_table
 end
 
----@return table<string, table<string, boolean>>
-local function get_prototypes_from_recipe(recipe_name)
-  local prototype_map = {}
-  local recipe = data.raw.recipe[recipe_name]
-  recipe.hidden_in_factoriopedia = true
-
-  if recipe.results then
-    for _, recipe_result in pairs(recipe.results) do
-      Util.add_result_and_placed_entity_to_map(recipe_result, prototype_map)
-    end
-  end
-
-  return prototype_map
-end
-
 -- Debug: Set description
 local function debug_set_description(hide_location, technology_name)
   local locations = technology_to_locations[technology_name]
@@ -114,8 +99,7 @@ function TechTree.add_tech_tree_prototypes(hide_location, prototypes_to_hide, pr
     local recipes = get_recipes_from_tech(technology_name)
     for _, recipe_name in pairs(recipes) do
       prototype_map["recipe"][recipe_name] = true
-      local result_map = get_prototypes_from_recipe(recipe_name)
-      Util.merge_maps_of_sets(prototype_map, result_map)
+      Util.add_prototypes_from_recipe_to_map(recipe_name, prototype_map)
     end
 
     debug_set_description(hide_location, technology_name)

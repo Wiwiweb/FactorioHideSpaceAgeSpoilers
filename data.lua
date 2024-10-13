@@ -81,6 +81,14 @@ for location_name, planet_name in pairs(SpoilerContent.planet) do
   end
 end
 
+-- Prototypes from recipes unlocked at the start (keep them revealed)
+for recipe_name, recipe in pairs(data.raw.recipe) do
+  prototypes_to_keep_revealed["recipe"] = prototypes_to_keep_revealed["recipe"] or {}
+  if recipe.enabled then
+    Util.add_prototypes_from_recipe_to_map(recipe_name, prototypes_to_keep_revealed)
+  end
+end
+
 -- Prototypes from tech
 TechTree.add_tech_tree_prototypes(hide_location, prototypes_to_hide, prototypes_to_keep_revealed)
 
