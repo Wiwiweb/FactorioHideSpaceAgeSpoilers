@@ -70,7 +70,6 @@ local function get_recipes_from_tech(technology_name)
   return recipe_table
 end
 
--- Debug: Set description
 local function debug_set_description(hide_location, technology_name)
   local locations = technology_to_locations[technology_name]
   local s = ""
@@ -102,7 +101,7 @@ function TechTree.add_tech_tree_prototypes(hide_location, prototypes_to_hide, pr
       Common.add_prototypes_from_recipe_to_map(recipe_name, prototype_map)
     end
 
-    debug_set_description(hide_location, technology_name)
+    -- debug_set_description(hide_location, technology_name)
   end
 end
 
