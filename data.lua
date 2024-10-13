@@ -41,6 +41,8 @@ end
 -- Prototypes placed by map gen settings (resources, cliffs, trees, rocks, tiles...)
 for location_name, planet_name in pairs(SpoilerContent.planet) do
   local prototype_map = hide_location[location_name] and prototypes_to_hide or prototypes_to_keep_revealed
+  prototype_map["planet"] = prototype_map["planet"] or {}
+  prototype_map["planet"][planet_name] = true
   local map_gen = data.raw.planet[planet_name].map_gen_settings
   if map_gen then
     if map_gen.cliff_settings then
@@ -69,6 +71,11 @@ for location_name, planet_name in pairs(SpoilerContent.planet) do
         for tile_name, _ in pairs(map_gen.autoplace_settings.tile.settings) do
           prototype_map["tile"] = prototype_map["tile"] or {}
           prototype_map["tile"][tile_name] = true
+          local prototype = data.raw.tile[tile_name]
+          if prototype.fluid then -- Offshore pump
+            prototype_map["fluid"] = prototype_map["fluid"] or {}
+            prototype_map["fluid"][prototype.fluid] = true
+          end
         end
       end
       if map_gen.autoplace_settings.entity and map_gen.autoplace_settings.entity.settings then
