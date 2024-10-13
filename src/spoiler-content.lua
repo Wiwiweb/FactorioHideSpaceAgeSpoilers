@@ -48,6 +48,7 @@ SpoilerContent.custom_prototypes = {
     ["space-connection"] = {"nauvis-fulgora", "gleba-fulgora"},
   },
   gleba = {
+    ["assembling-machine"] = {"captive-biter-spawner"},
     ["capsule"] = {"yumako", "jellynut"}, -- We could check for the minable properties of autoplace entities, but I'm tired
     ["tree"] = {
       "slipstack", "funneltrunk", "hairyclubnub", "teflilly", "lickmaw",
