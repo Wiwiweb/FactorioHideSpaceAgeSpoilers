@@ -27,28 +27,20 @@ local prototypes_to_hide = {}
 ---@type table<string, table<string, boolean>>
 local prototypes_to_keep_revealed = {}
 
-local function add_to_prototype_maps(location_name, prototype_type, prototype_name)
-  local prototype_map
-  if hide_location[location_name] then
-    prototype_map = prototypes_to_hide
-  else
-    prototype_map = prototypes_to_keep_revealed
-  end
-  prototype_map[prototype_type] = prototype_map[prototype_type] or {}
-  prototype_map[prototype_type][prototype_name] = true
-end
-
 -- Custom hardcoded prototypes
 for location_name, prototype_table in pairs(SpoilerContent.custom_prototypes) do
+  local prototype_map = hide_location[location_name] and prototypes_to_hide or prototypes_to_keep_revealed
   for prototype_type, prototype_names in pairs(prototype_table) do
+    prototype_map[prototype_type] = prototype_map[prototype_type] or {}
     for _, prototype_name in pairs(prototype_names) do
-      add_to_prototype_maps(location_name, prototype_type, prototype_name)
+      prototype_map[prototype_type][prototype_name] = true
     end
   end
 end
 
 -- Prototypes placed by map gen settings (resources, cliffs, trees, rocks, tiles...)
 for location_name, planet_name in pairs(SpoilerContent.planet) do
+  local prototype_map = hide_location[location_name] and prototypes_to_hide or prototypes_to_keep_revealed
   local map_gen = data.raw.planet[planet_name].map_gen_settings
   if map_gen then
     if map_gen.cliff_settings then
@@ -58,19 +50,31 @@ for location_name, planet_name in pairs(SpoilerContent.planet) do
       for autoplace_control_name, _autoplace_control in pairs(map_gen.autoplace_controls) do
         local resource = data.raw.resource[autoplace_control_name]
         if resource then
-          add_to_prototype_maps(location_name, "resource", autoplace_control_name)
+          prototype_map["resource"] = prototype_map["resource"] or {}
+          prototype_map["resource"][autoplace_control_name] = true
+          if resource.minable then
+            if resource.minable.results then
+              for _, result in pairs(resource.minable.results) do
+                Util.add_result_and_placed_entity_to_map(result, prototype_map)
+              end
+            elseif resource.minable.result then
+              Util.add_item_and_placed_entity_to_map(resource.minable.result, prototype_map)
+            end
+          end
         end
       end
     end
     if map_gen.autoplace_settings then
       if map_gen.autoplace_settings.tile and map_gen.autoplace_settings.tile.settings then
         for tile_name, _ in pairs(map_gen.autoplace_settings.tile.settings) do
-          add_to_prototype_maps(location_name, "tile", tile_name)
+          prototype_map["tile"] = prototype_map["tile"] or {}
+          prototype_map["tile"][tile_name] = true
         end
       end
       if map_gen.autoplace_settings.entity and map_gen.autoplace_settings.entity.settings then
         for entity_name, _ in pairs(map_gen.autoplace_settings.entity.settings) do
-          add_to_prototype_maps(location_name, "unknown_entity", entity_name)
+          prototype_map["unknown_entity"] = prototype_map["unknown_entity"] or {}
+          prototype_map["unknown_entity"][entity_name] = true
         end
       end
     end

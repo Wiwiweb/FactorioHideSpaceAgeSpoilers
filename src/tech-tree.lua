@@ -78,26 +78,7 @@ local function get_prototypes_from_recipe(recipe_name)
 
   if recipe.results then
     for _, recipe_result in pairs(recipe.results) do
-      if recipe_result.type == "fluid" then
-        prototype_map["fluid"] = prototype_map["fluid"] or {}
-        prototype_map["fluid"][recipe_result.name] = true
-      elseif recipe_result.type == "item" then
-        prototype = Util.find_prototype_for_item_name(recipe_result.name)
-        prototype_map[prototype.type] = prototype_map[prototype.type] or {}
-        prototype_map[prototype.type][recipe_result.name] = true
-        if prototype.place_result then
-          prototype_map["unknown_entity"] = prototype_map["unknown_entity"] or {}
-          prototype_map["unknown_entity"][prototype.place_result] = true
-        end
-        if prototype.plant_result then
-          prototype_map["plant"] = prototype_map["plant"] or {}
-          prototype_map["plant"][prototype.plant_result] = true
-        end
-        if prototype.place_as_tile then
-          prototype_map["tile"] = prototype_map["tile"] or {}
-          prototype_map["tile"][prototype.place_as_tile.result] = true
-        end
-      end
+      Util.add_result_and_placed_entity_to_map(recipe_result, prototype_map)
     end
   end
 
