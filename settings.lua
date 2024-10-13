@@ -7,7 +7,7 @@ for location_name, location in pairs(Common.locations) do
     {
       type = "bool-setting",
       name = "hsas-reveal-" .. location_name,
-      localised_name = {"mod-setting-name.hsas-reveal", location.localised_name},
+      localised_name = {"mod-setting-name.hsas-reveal", location.image, location.localised_name},
       setting_type = "startup",
       order = tostring(i),
       hidden = location.hidden or false,

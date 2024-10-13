@@ -2,32 +2,39 @@ local Common = {}
 
 Common.locations = {
   nauvis = {
+    image = "[img=space-location/nauvis]",
     localised_name = {"space-location-name.nauvis"},
     starting_technologies = {"electronics", "steam-power"},
     hidden = true,
     default_value = true,
   },
   space = {
+    image = "[img=surface/space-platform]",
     localised_name = {"item-group-name.space"},
     starting_technologies = {"space-platform"},
   },
   vulcanus = {
+    image = "[img=space-location/vulcanus]",
     localised_name = {"space-location-name.vulcanus"},
     starting_technologies = {"planet-discovery-vulcanus"},
   },
   fulgora = {
+    image = "[img=space-location/fulgora]",
     localised_name = {"space-location-name.fulgora"},
     starting_technologies = {"planet-discovery-fulgora"},
   },
   gleba = {
+    image = "[img=space-location/gleba]",
     localised_name = {"space-location-name.gleba"},
     starting_technologies = {"planet-discovery-gleba"},
   },
   aquilo = {
+    image = "[img=space-location/aquilo]",
     localised_name = {"space-location-name.aquilo"},
     starting_technologies = {"planet-discovery-aquilo"},
   },
   endgame = {
+    image = "[img=space-location/solar-system-edge]",
     localised_name = {"mod-setting-name.hsas-endgame"},
     starting_technologies = {"promethium-science-pack"},
   },
