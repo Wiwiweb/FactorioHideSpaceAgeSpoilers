@@ -9,16 +9,6 @@ SpoilerContent.menu_simulations = {
   endgame = {},
 }
 
-SpoilerContent.starting_technologies = {
-  nauvis = {"electronics", "steam-power"},
-  space = {"space-platform"},
-  vulcanus = {"planet-discovery-vulcanus"},
-  fulgora = {"planet-discovery-fulgora"},
-  gleba = {"planet-discovery-gleba"},
-  aquilo = {"planet-discovery-aquilo"},
-  endgame = {"promethium-science-pack"},
-}
-
 SpoilerContent.planet = {
   nauvis = "nauvis",
   vulcanus = "vulcanus",

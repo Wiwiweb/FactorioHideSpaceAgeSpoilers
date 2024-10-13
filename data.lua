@@ -3,7 +3,7 @@ SpoilerContent = require("src/spoiler-content")
 TechTree = require("src/tech-tree")
 
 local hide_location = {}
-for location_name, _ in pairs(SpoilerContent.starting_technologies) do
+for location_name, _location in pairs(Common.locations) do
   if settings.startup["hsas-reveal-" .. location_name] then
     hide_location[location_name] = not settings.startup["hsas-reveal-" .. location_name].value
   end

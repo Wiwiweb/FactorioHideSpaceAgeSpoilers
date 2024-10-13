@@ -1,5 +1,43 @@
 local Common = {}
 
+Common.locations = {
+  nauvis = {
+    localised_name = {"space-location-name.nauvis"},
+    starting_technologies = {"electronics", "steam-power"},
+    hidden = true,
+    default_value = true,
+  },
+  space = {
+    localised_name = {"item-group-name.space"},
+    starting_technologies = {"space-platform"},
+  },
+  vulcanus = {
+    localised_name = {"space-location-name.vulcanus"},
+    starting_technologies = {"planet-discovery-vulcanus"},
+  },
+  fulgora = {
+    localised_name = {"space-location-name.fulgora"},
+    starting_technologies = {"planet-discovery-fulgora"},
+  },
+  gleba = {
+    localised_name = {"space-location-name.gleba"},
+    starting_technologies = {"planet-discovery-gleba"},
+  },
+  aquilo = {
+    localised_name = {"space-location-name.aquilo"},
+    starting_technologies = {"planet-discovery-aquilo"},
+  },
+  endgame = {
+    localised_name = {"mod-setting-name.hsas-endgame"},
+    starting_technologies = {"promethium-science-pack"},
+  },
+}
+
+Common.starting_technologies = {}
+for location_name, location in pairs(Common.locations) do
+  Common.starting_technologies[location_name] = location.starting_technologies
+end
+
 local function find_prototype_for_name(name, types)
   for type, _prototypes in pairs(types) do
     if data.raw[type] then

@@ -4,7 +4,7 @@ local TechTree = {}
 
 -- Create set of starting technologies to find end points (e.g. hiding Vulcanus should not go beyond Aquilo discovery tech)
 local all_starting_technologies = {}
-for _location_name, starting_technologies in pairs(SpoilerContent.starting_technologies) do
+for _location_name, starting_technologies in pairs(Common.starting_technologies) do
   for _, starting_technology_name in pairs(starting_technologies) do
     all_starting_technologies[starting_technology_name] = true
   end
@@ -41,7 +41,7 @@ local function set_locations_for_tech_and_children(location_name, technology_nam
     end
   end
 end
-for location_name, starting_technologies in pairs(SpoilerContent.starting_technologies) do
+for location_name, starting_technologies in pairs(Common.starting_technologies) do
   for _, starting_technology_name in pairs(starting_technologies) do
     set_locations_for_tech_and_children(location_name, starting_technology_name)
   end
