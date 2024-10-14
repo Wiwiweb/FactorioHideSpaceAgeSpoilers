@@ -1,6 +1,6 @@
 {
   "name": "hide-space-age-spoilers",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "title": "Hide Space Age spoilers",
   "author": "Wiwiweb",
   "dependencies": ["base >= 2.0.0", "space-age >= 2.0.0"],
