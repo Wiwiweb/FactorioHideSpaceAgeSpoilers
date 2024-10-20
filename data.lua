@@ -71,24 +71,6 @@ for location_name, planet_name in pairs(SpoilerContent.planet) do
       prototype_map["cliff"] = prototype_map["cliff"] or {}
       prototype_map["cliff"][map_gen.cliff_settings.name] = true
     end
-    if map_gen.autoplace_controls then
-      for autoplace_control_name, _autoplace_control in pairs(map_gen.autoplace_controls) do
-        local resource = data.raw.resource[autoplace_control_name]
-        if resource then
-          prototype_map["resource"] = prototype_map["resource"] or {}
-          prototype_map["resource"][autoplace_control_name] = true
-          if resource.minable then
-            if resource.minable.results then
-              for _, result in pairs(resource.minable.results) do
-                Common.add_result_and_placed_entity_to_map(result, prototype_map)
-              end
-            elseif resource.minable.result then
-              Common.add_item_and_placed_entity_to_map(resource.minable.result, prototype_map)
-            end
-          end
-        end
-      end
-    end
     if map_gen.autoplace_settings then
       if map_gen.autoplace_settings.tile and map_gen.autoplace_settings.tile.settings then
         for tile_name, _ in pairs(map_gen.autoplace_settings.tile.settings) do
@@ -103,8 +85,23 @@ for location_name, planet_name in pairs(SpoilerContent.planet) do
       end
       if map_gen.autoplace_settings.entity and map_gen.autoplace_settings.entity.settings then
         for entity_name, _ in pairs(map_gen.autoplace_settings.entity.settings) do
-          prototype_map["unknown_entity"] = prototype_map["unknown_entity"] or {}
-          prototype_map["unknown_entity"][entity_name] = true
+          local resource = data.raw.resource[entity_name]
+          if resource then
+            prototype_map["resource"] = prototype_map["resource"] or {}
+            prototype_map["resource"][entity_name] = true
+            if resource.minable then
+              if resource.minable.results then
+                for _, result in pairs(resource.minable.results) do
+                  Common.add_result_and_placed_entity_to_map(result, prototype_map)
+                end
+              elseif resource.minable.result then
+                Common.add_item_and_placed_entity_to_map(resource.minable.result, prototype_map)
+              end
+            end
+          else
+            prototype_map["unknown_entity"] = prototype_map["unknown_entity"] or {}
+            prototype_map["unknown_entity"][entity_name] = true
+          end
         end
       end
     end
