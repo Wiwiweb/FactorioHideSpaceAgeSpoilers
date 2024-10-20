@@ -1,12 +1,8 @@
 local SpoilerContent = {}
 
-SpoilerContent.menu_simulations = {
+SpoilerContent.custom_menu_simulations = {
   space = {"platform_science"},
-  vulcanus = {"vulcanus_lava_forge", "vulcanus_crossing"},
-  fulgora = {"fulgora_city_crossing", "fulgora_nightfall"},
-  gleba = {"gleba_pentapod_ponds", "gleba_egg_escape", "gleba_agri_towers"},
-  aquilo = {"aquilo_send_help"},
-  endgame = {},
+  gleba = {"nauvis_biolab"},
 }
 
 SpoilerContent.planet = {

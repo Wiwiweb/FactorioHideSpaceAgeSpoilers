@@ -5,20 +5,40 @@ TechTree = require("src/tech-tree")
 local only_factoriopedia = settings.startup["hsas-only-factoriopedia"].value
 
 local hide_location = {}
+local custom_hide_simulation = {}
 for location_name, _location in pairs(Common.locations) do
-  if settings.startup["hsas-reveal-" .. location_name] then
-    hide_location[location_name] = not settings.startup["hsas-reveal-" .. location_name].value
+  if settings.startup["hsas-reveal-" .. location_name] and not settings.startup["hsas-reveal-" .. location_name].value then
+    hide_location[location_name] = true
+
+    if SpoilerContent.custom_menu_simulations[location_name] then
+      for _, name in pairs(SpoilerContent.custom_menu_simulations[location_name]) do
+        custom_hide_simulation[name] = true
+      end
+    end
   end
 end
 
 -- Menu simulations
 local data_raw_menu_simulations = data.raw["utility-constants"]["default"].main_menu_simulations
-for location_name, menu_simulation_names in pairs(SpoilerContent.menu_simulations) do
-  if hide_location[location_name] then
-    for _, menu_simulation_name in pairs(menu_simulation_names) do
-      data_raw_menu_simulations[menu_simulation_name] = nil
+local simulations_to_hide = {}
+for simulation_name, _ in pairs(data_raw_menu_simulations) do
+
+  if custom_hide_simulation[simulation_name] then
+    table.insert(simulations_to_hide, simulation_name)
+    goto continue
+  end
+
+  for location_name, _ in pairs(hide_location) do
+    if string.find(simulation_name, location_name) then
+      table.insert(simulations_to_hide, simulation_name)
     end
   end
+
+  ::continue::
+end
+log("Simulations hidden: " .. serpent.line(simulations_to_hide))
+for _, simulation_name in pairs(simulations_to_hide) do
+  data_raw_menu_simulations[simulation_name] = nil
 end
 
 ---- Prototypes
