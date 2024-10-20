@@ -46,6 +46,7 @@ for location_name, planet_name in pairs(SpoilerContent.planet) do
   local map_gen = data.raw.planet[planet_name].map_gen_settings
   if map_gen then
     if map_gen.cliff_settings then
+      prototype_map["cliff"] = prototype_map["cliff"] or {}
       prototype_map["cliff"][map_gen.cliff_settings.name] = true
     end
     if map_gen.autoplace_controls then
