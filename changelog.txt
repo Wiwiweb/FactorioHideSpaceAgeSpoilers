@@ -3,6 +3,8 @@ Version: 1.0.1
 Date: ???
   Changes:
 
+  Bugfixes:
+    - Fixed all cliffs were always hidden.
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.0
 Date: 2024-10-14

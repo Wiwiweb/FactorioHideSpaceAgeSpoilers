@@ -46,7 +46,7 @@ for location_name, location in pairs(Common.locations) do
 end
 
 local function find_prototype_for_name(name, types)
-  for type, _prototypes in pairs(types) do
+  for type, _ in pairs(types) do
     if data.raw[type] then
       local prototype = data.raw[type][name]
       if prototype then return prototype end

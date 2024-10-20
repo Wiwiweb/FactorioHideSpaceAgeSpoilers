@@ -46,7 +46,7 @@ for location_name, planet_name in pairs(SpoilerContent.planet) do
   local map_gen = data.raw.planet[planet_name].map_gen_settings
   if map_gen then
     if map_gen.cliff_settings then
-      data.raw.cliff[map_gen.cliff_settings.name].hidden_in_factoriopedia = true
+      prototype_map["cliff"][map_gen.cliff_settings.name] = true
     end
     if map_gen.autoplace_controls then
       for autoplace_control_name, _autoplace_control in pairs(map_gen.autoplace_controls) do
