@@ -2,6 +2,7 @@
 Version: 1.0.1
 Date: ???
   Changes:
+    - Now also hides from the toolbar selection, logistic requests, technology effects, and circuitry signal selection.
 
   Bugfixes:
     - Fixed all cliffs were always hidden.

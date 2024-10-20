@@ -112,8 +112,22 @@ for prototype_type, prototype_set in pairs(prototypes_to_hide) do
       prototype = data.raw[prototype_type][prototype_name]
     end
 
-    prototype.hidden_in_factoriopedia = true
+    prototype.hidden = true
 
     ::continue::
+  end
+end
+
+-- Remove hidden next_upgrade
+for type, _ in pairs(defines.prototypes.entity) do
+  if data.raw[type] then
+    for _name, prototype in pairs(data.raw[type]) do
+      if prototype.next_upgrade then
+        local upgrade_prototype = Common.find_prototype_for_entity_name(prototype.next_upgrade)
+        if upgrade_prototype.hidden then
+          prototype.next_upgrade = nil
+        end
+      end
+    end
   end
 end
