@@ -1,7 +1,18 @@
 Common = require("src/common")
 
+
+data:extend({
+  {
+    type = "bool-setting",
+    name = "hsas-only-factoriopedia",
+    setting_type = "startup",
+    order = "1",
+    default_value = true,
+  }
+})
+
 local settings = {}
-local i = 1
+local i = 2
 for location_name, location in pairs(Common.locations) do
   table.insert(settings,
     {

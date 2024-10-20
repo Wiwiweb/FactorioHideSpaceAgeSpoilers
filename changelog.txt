@@ -2,7 +2,8 @@
 Version: 1.0.1
 Date: ???
   Changes:
-    - Now also hides from the toolbar selection, logistic requests, technology effects, and circuitry signal selection.
+    - Added a mod setting to hide content from everywhere, not just Factoriopedia.
+      When used, it also hides from the toolbar selection, logistic requests, technology effects, and circuitry signal selection.
 
   Bugfixes:
     - Fixed all cliffs were always hidden.

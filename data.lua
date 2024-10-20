@@ -2,6 +2,8 @@ Common = require("src/common")
 SpoilerContent = require("src/spoiler-content")
 TechTree = require("src/tech-tree")
 
+local only_factoriopedia = settings.startup["hsas-only-factoriopedia"].value
+
 local hide_location = {}
 for location_name, _location in pairs(Common.locations) do
   if settings.startup["hsas-reveal-" .. location_name] then
@@ -113,20 +115,26 @@ for prototype_type, prototype_set in pairs(prototypes_to_hide) do
       prototype = data.raw[prototype_type][prototype_name]
     end
 
-    prototype.hidden = true
+    if only_factoriopedia then
+      prototype.hidden_in_factoriopedia = true
+    else
+      prototype.hidden = true
+    end
 
     ::continue::
   end
 end
 
 -- Remove hidden next_upgrade
-for type, _ in pairs(defines.prototypes.entity) do
-  if data.raw[type] then
-    for _name, prototype in pairs(data.raw[type]) do
-      if prototype.next_upgrade then
-        local upgrade_prototype = Common.find_prototype_for_entity_name(prototype.next_upgrade)
-        if upgrade_prototype.hidden then
-          prototype.next_upgrade = nil
+if not only_factoriopedia then
+  for type, _ in pairs(defines.prototypes.entity) do
+    if data.raw[type] then
+      for _name, prototype in pairs(data.raw[type]) do
+        if prototype.next_upgrade then
+          local upgrade_prototype = Common.find_prototype_for_entity_name(prototype.next_upgrade)
+          if upgrade_prototype.hidden then
+            prototype.next_upgrade = nil
+          end
         end
       end
     end
