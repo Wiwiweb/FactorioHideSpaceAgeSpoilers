@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.1
-Date: ???
+Date: 2024-10-20
   Changes:
     - Added a mod setting to hide content from everywhere, not just Factoriopedia. 
       When used, it also hides from the toolbar selection, logistic requests, technology effects, and circuitry signal selection.
