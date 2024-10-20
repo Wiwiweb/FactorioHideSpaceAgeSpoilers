@@ -40,6 +40,9 @@ SpoilerContent.custom_prototypes = {
   fulgora = {
     ["ammo-category"] = {"tesla"},
     ["lightning"] = {"lightning"},
+    ["simple-entity"] = {
+      "fulgurite-small", -- Unused entity
+    },
     ["asteroid"] = {
       "small-metallic-asteroid", "medium-metallic-asteroid",
       "small-carbonic-asteroid", "medium-carbonic-asteroid",
