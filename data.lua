@@ -111,7 +111,7 @@ end
 -- Prototypes from recipes unlocked at the start (keep them revealed)
 for recipe_name, recipe in pairs(data.raw.recipe) do
   prototypes_to_keep_revealed["recipe"] = prototypes_to_keep_revealed["recipe"] or {}
-  if recipe.enabled then
+  if recipe.enabled == nil or recipe.enabled == true then -- nil defaults to true
     Common.add_prototypes_from_recipe_to_map(recipe_name, prototypes_to_keep_revealed)
   end
 end
