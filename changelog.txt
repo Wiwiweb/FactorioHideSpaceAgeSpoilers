@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.2
-Date: ????
+Date: 2024-10-21
   Bugfixes:
     - Fixed that some items unlocked from the start were being hidden (such as iron plates and gears).
 
