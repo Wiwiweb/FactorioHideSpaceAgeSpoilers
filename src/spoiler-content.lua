@@ -14,6 +14,9 @@ SpoilerContent.planet = {
 }
 
 SpoilerContent.custom_prototypes = {
+  nauvis = {
+    ["fluid"] = {"steam"},
+  },
   space = {
     ["asteroid-chunk"] = {"metallic-asteroid-chunk", "carbonic-asteroid-chunk", "oxide-asteroid-chunk"},
     ["item"] = {"metallic-asteroid-chunk", "carbonic-asteroid-chunk", "oxide-asteroid-chunk"},

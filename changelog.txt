@@ -1,7 +1,9 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.3
 Date: ????
-  Changes:
+  Bugfixes:
+    - Fixed that Steam was being associated with Vulcanus instead of being always visible.
+
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.2
 Date: 2024-10-21
