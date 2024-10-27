@@ -3,6 +3,7 @@ Version: 1.0.3
 Date: ????
   Bugfixes:
     - Fixed that Steam was being associated with Vulcanus instead of being always visible.
+    - Fixed typo in the chat message reminder when discovering a new location.
 
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.2

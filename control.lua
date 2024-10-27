@@ -12,7 +12,7 @@ script.on_event(defines.events.on_research_finished, function(event)
   local location_name = tech_to_location_start[event.research.name]
   if location_name and settings.startup["hsas-reveal-" .. location_name].value == false then
     local location = Common.locations[location_name]
-    game.print({"", location.image, {"hide-space-age-spoilers.mod-settings-reminder", location.localised_name}})
+    game.print({"", {"hide-space-age-spoilers.mod-settings-reminder", {"", location.image, location.localised_name}}})
     storage.already_reminded = true
   end
 end)
