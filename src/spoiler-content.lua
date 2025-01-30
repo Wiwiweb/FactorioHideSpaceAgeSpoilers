@@ -1,7 +1,6 @@
 local SpoilerContent = {}
 
 SpoilerContent.custom_menu_simulations = {
-  space = {"platform_science"},
   gleba = {"nauvis_biolab"},
 }
 

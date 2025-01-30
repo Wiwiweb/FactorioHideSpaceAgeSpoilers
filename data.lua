@@ -29,8 +29,10 @@ for simulation_name, _ in pairs(data_raw_menu_simulations) do
   end
 
   for location_name, _ in pairs(hide_location) do
+    if location_name == "space" then location_name = "platform" end
     if string.find(simulation_name, location_name) then
       table.insert(simulations_to_hide, simulation_name)
+      goto continue
     end
   end
 
