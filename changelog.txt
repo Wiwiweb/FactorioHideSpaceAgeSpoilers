@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.4
-Date: ????
+Date: 2025-01-30
   Bugfixes:
     - Fixed that the 2 new space platform menu simulations would not be hidden when hiding "Space" content.
     - The new Nauvis simulation showing an endgame rocket factory with all endgame buildings visible, will now be hidden behind Aquilo.
