@@ -2,6 +2,7 @@ local SpoilerContent = {}
 
 SpoilerContent.custom_menu_simulations = {
   gleba = {"nauvis_biolab"},
+  aquilo = {"nauvis_rocket_factory"},
 }
 
 SpoilerContent.planet = {
