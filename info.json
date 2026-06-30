@@ -1,15 +1,15 @@
 {
   "name": "hide-space-age-spoilers",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "title": "Hide Space Age spoilers",
   "author": "Wiwiweb",
   "dependencies": [
-    "base >= 2.0.0", 
-    "space-age >= 2.0.0",
-    "? discovery_tree >= 1.0.5"
+    "base >= 2.1.0", 
+    "space-age >= 2.1.0",
+    "+ discovery_tree >= 1.0.11"
   ],
   "space_travel_required": true,
-  "factorio_version": "2.0",
+  "factorio_version": "2.1",
   "package": {
     "ignore": [
       "exclude-from-package/*",

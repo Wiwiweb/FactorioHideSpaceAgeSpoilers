@@ -1,7 +1,11 @@
 ---------------------------------------------------------------------------------------------------
-Version: 1.0.5
+Version: 1.1.0
 Date: ????
   Changes:
+    - Updated for Factorio 2.1.
+      Although this mod's purpose is mostly covered by the new Factoriopedia setting that hides unresearched items, the mod still covers a couple extra things that might be useful to some people.
+    - "Discovery Tree" is now a recommended mod, instead of just an optional mod.
+
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.4
 Date: 2025-01-30
